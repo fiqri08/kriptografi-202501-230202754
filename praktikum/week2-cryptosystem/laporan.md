@@ -66,6 +66,8 @@ Sebuah cryptosystem umumnya terdiri dari lima komponen dasar:
             Kelemahan: Lebih lambat dibanding simetris.
             Contoh:
             Kamu kirim pesan ke seseorang menggunakan kunci publik miliknya. Hanya dia yang bisa membuka pesan itu menggunakan kunci privat-nya.
+
+
 ---
 
 ## 3. Alat dan Bahan
