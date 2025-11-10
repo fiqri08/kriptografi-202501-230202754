@@ -105,60 +105,49 @@ Simulasikan waktu brute force dengan asumsi kecepatan komputer tertentu.
 ---
 
 ## 5. Source Code
-(Salin kode program utama yang dibuat atau dimodifikasi.  
-Gunakan blok kode:
+def entropy(keyspace_size):
+    return math.log2(keyspace_size)
+menjadi 
+entropy -= p * math.log2(p)
 
-```python
-# contoh potongan kode
-def encrypt(text, key):
-    return ...
-```
-)
+def unicity_distance(HK, R=0.75, A=26):
+    return HK / (R * math.log2(A))
+menjadi
+def hitung_unicity_distance(entropy_per_char, key_space):
+    return key_space / entropy_per_char
+
+Entropy ruang kunci = 4.7 bit
+Unicity distance ≈ 0.24 huruf
+menjadi
+Entropy teks ≈ 4.5 bit/karakter
+Key space = 4.7 bit
+Unicity distance ≈ 1.04 karakter
+
 
 ---
 
 ## 6. Hasil dan Pembahasan
-(- Lampirkan screenshot hasil eksekusi program (taruh di folder `screenshots/`).  
-- Berikan tabel atau ringkasan hasil uji jika diperlukan.  
-- Jelaskan apakah hasil sesuai ekspektasi.  
-- Bahas error (jika ada) dan solusinya. 
+-hasil masih masuk akal
+-untuk error nya adalah dimana tidak boleeh kosong di bagian inputnya
 
-Hasil eksekusi program Caesar Cipher:
-
-![Hasil Eksekusi](screenshots/output.png)
-![Hasil Input](screenshots/input.png)
-![Hasil Output](screenshots/output.png)
-)
 
 ---
 
 ## 7. Jawaban Pertanyaan
 (Jawab pertanyaan diskusi yang diberikan pada modul.  
-- Pertanyaan 1: …  
-- Pertanyaan 2: …  
+- Pertanyaan 1: Dalam konteks kekuatan kunci kriptografi, entropi adalah ukuran seberapa tidak terduga (random) atau seberapa banyak ketidakpastian yang ada dalam pemilihan kunci. 
+- Pertanyaan 2: Unicity distance (U) adalah jumlah minimal ciphertext (biasanya dalam satuan karakter atau bit) yang diperlukan agar hanya ada satu kunci yang mungkin menghasilkan plaintext yang masuk akal.
+- Pertanyaan 3: Meskipun algoritma enkripsi modern seperti AES, RSA, ChaCha20, dll dirancang agar sangat kuat secara matematis, brute force masih dianggap ancaman nyata. bukan karena lemah di algoritma, tapi karena faktor manusia, implementasi, dan sistem di sekitarnya.
+1. Manusia jarang menggunakan kunci dengan entropi maksimum
+2. Kelemahan implementasi, bukan algoritma
+3. Kekuatan komputasi terus meningkat
+4. Serangan hibrida: brute force + kecerdasan
 )
 ---
 
 ## 8. Kesimpulan
-(Tuliskan kesimpulan singkat (2–3 kalimat) berdasarkan percobaan.  )
+Entropi menggambarkan tingkat keacakan atau ketidakpastian suatu kunci. semakin tinggi entropinya, semakin sulit kunci ditebak.
+Unicity distance menunjukkan seberapa banyak ciphertext yang dibutuhkan agar hanya satu kunci yang mungkin benar, sehingga mengukur batas teoretis keamanan cipher.
+Keduanya bersama-sama menentukan seberapa kuat suatu sistem kriptografi terhadap upaya pemecahan kunci.
 
 ---
-
-## 9. Daftar Pustaka
-(Cantumkan referensi yang digunakan.  
-Contoh:  
-- Katz, J., & Lindell, Y. *Introduction to Modern Cryptography*.  
-- Stallings, W. *Cryptography and Network Security*.  )
-
----
-
-## 10. Commit Log
-(Tuliskan bukti commit Git yang relevan.  
-Contoh:
-```
-commit abc12345
-Author: Nama Mahasiswa <email>
-Date:   2025-09-20
-
-    week2-cryptosystem: implementasi Caesar Cipher dan laporan )
-```
