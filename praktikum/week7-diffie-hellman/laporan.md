@@ -1,14 +1,16 @@
 # Laporan Praktikum Kriptografi
-Minggu ke-: X  
-Topik: [judul praktikum]  
-Nama: [Nama Mahasiswa]  
-NIM: [NIM Mahasiswa]  
-Kelas: [Kelas]  
+Minggu ke-: 7 
+Topik: Diffie–Hellman  
+Nama: Fiqri Nur Hidayanto  
+NIM: 230202754  
+Kelas: 5IKKA  
 
 ---
 
 ## 1. Tujuan
-(Tuliskan tujuan pembelajaran praktikum sesuai modul.)
+1. Melakukan simulasi protokol Diffie-Hellman untuk pertukaran kunci publik.
+2. Menjelaskan mekanisme pertukaran kunci rahasia menggunakan bilangan prima dan logaritma diskrit.
+3. Menganalisis potensi serangan pada protokol Diffie-Hellman (termasuk serangan Man-in-the-Middle / MITM).
 
 ---
 
