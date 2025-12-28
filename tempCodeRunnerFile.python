@@ -1,0 +1,53 @@
+# ============================================
+# Custom Cryptosystem (Huruf + Angka Random)
+# ============================================
+
+import string
+import random
+
+# Daftar karakter yang digunakan (huruf besar, kecil, angka)
+CHARACTERS = string.ascii_letters + string.digits
+CHAR_LEN = len(CHARACTERS)
+
+# Fungsi untuk enkripsi
+def encrypt(text, key):
+    text = text.replace(" ", "")  # hapus spasi agar lebih aman
+    result = ""
+    for char in text:
+        if char in CHARACTERS:
+            index = CHARACTERS.index(char)
+            new_index = (index + key) % CHAR_LEN
+            encrypted_char = CHARACTERS[new_index]
+            # Tambahkan angka acak di belakang setiap karakter terenkripsi
+            result += encrypted_char + str(random.randint(0, 9))
+        else:
+            # Jika karakter tidak dikenal, tambahkan langsung
+            result += char + str(random.randint(0, 9))
+    return result
+
+# Fungsi untuk dekripsi
+def decrypt(ciphertext, key):
+    result = ""
+    # Karena setiap karakter terenkripsi diikuti satu angka acak,
+    # kita ambil 2 karakter sekali (huruf terenkripsi + angka acak)
+    for i in range(0, len(ciphertext), 2):
+        char = ciphertext[i]  # ambil huruf terenkripsi saja
+        if char in CHARACTERS:
+            index = CHARACTERS.index(char)
+            new_index = (index - key) % CHAR_LEN
+            result += CHARACTERS[new_index]
+        else:
+            result += char
+    return result
+
+# --- Program utama ---
+if __name__ == "__main__":
+    print("=== Advanced Cryptosystem: Huruf + Angka Acak ===")
+    text = input("Masukkan teks yang ingin dienkripsi: ")
+    key = int(input("Masukkan kunci (angka bebas, misal 5): "))
+
+    encrypted = encrypt(text, key)
+    print(f"\nHasil Enkripsi : {encrypted}")
+
+    decrypted = decrypt(encrypted, key)
+    print(f"Hasil Dekripsi : {decrypted}")
