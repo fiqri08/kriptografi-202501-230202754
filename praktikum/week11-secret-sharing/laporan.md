@@ -95,63 +95,208 @@ Langkah 2 — Simulasi Manual (Tanpa Library)
     3. Bagikan (x, f(x)) sebagai share.
     4. Rekonstruksi menggunakan Lagrange Interpolation.
 
+Langkah 3 — Analisis Keamanan
+Diskusikan:
+- Mengapa skema (k, n) aman meskipun sebagian share bocor?
+    Skema (k, n) pada Shamir’s Secret Sharing tetap aman karena bersifat threshold dan memiliki keamanan information-theoretic.
+    - Rahasia disimpan sebagai konstanta pada polinomial derajat (k−1)
+    - Diperlukan minimal k titik untuk merekonstruksi polinomial tersebut
+    - Jika penyerang hanya memperoleh kurang dari k share, maka terdapat tak terhingga kemungkinan polinomial yang dapat dibentuk
+    Artinya:
+    - Share yang bocor (< k) tidak memberikan informasi apa pun tentang rahasia
+    - Penyerang tidak bisa menebak rahasia meskipun memiliki daya komputasi tak terbatas
+- Apa risiko jika threshold k terlalu kecil atau terlalu besar?
+    1. Threshold k Terlalu Kecil
+        Risiko keamanan meningkat, karena:
+        - Sedikit share saja sudah cukup untuk membuka rahasia
+        - Jika beberapa pihak berkolusi, rahasia dapat terbongkar
+        Contoh:
+        Skema (2, 5) → dua orang saja bisa membuka rahasia, rawan penyalahgunaan
+    2. Threshold k Terlalu Besar
+        Risiko ketersediaan meningkat, karena:
+        - Sulit mengumpulkan cukup share
+        - Jika satu atau dua share hilang, rahasia bisa tidak dapat dipulihkan
+        Contoh:
+        Skema (5, 5) → kehilangan satu share → rahasia hilang selamanya
+    3. Trade-off Keamanan vs Ketersediaan
+        Pemilihan nilai k harus seimbang antara:
+        - Keamanan (confidentiality)
+        - Ketersediaan (availability)
+- Bagaimana penerapan SSS di dunia nyata (contoh: manajemen kunci cryptocurrency, recovery password)?
+    Bagaimana Penerapan SSS di Dunia Nyata?
+    a. Manajemen Kunci Cryptocurrency
+        - Private key dompet dibagi ke beberapa pihak atau perangkat
+        - Transaksi hanya bisa dilakukan jika threshold terpenuhi
+        - Mencegah kehilangan atau pencurian satu kunci tunggal
+        Contoh:
+        - Multi-signature wallet
+        - Custody crypto institusional
+    b. Recovery Password dan Akses Sistem
+        - Password master dibagi ke beberapa admin
+        - Sistem dapat dipulihkan jika sebagian admin tersedia
+        - Mencegah satu orang menyalahgunakan akses
+    c. Keamanan Cloud & Data Sensitif
+        - Kunci enkripsi dibagi ke beberapa server
+        - Server tunggal tidak memiliki kunci lengkap
+        - Meningkatkan keamanan terhadap kompromi internal
+    d. Sistem Voting Elektronik
+        - Kunci dekripsi suara dibagi ke beberapa otoritas
+        - Hasil hanya dapat dibuka jika otoritas bekerja sama
 ---
 
 ## 5. Source Code
-(Salin kode program utama yang dibuat atau dimodifikasi.  
-Gunakan blok kode:
+from secretsharing import SecretSharer
 
-```python
-# contoh potongan kode
-def encrypt(text, key):
-    return ...
-```
-)
+# Rahasia yang ingin dibagi
+secret = "KriptografiUPB2025"
+
+# Bagi menjadi 5 shares, ambang batas 3 (minimal 3 shares untuk rekonstruksi)
+shares = SecretSharer.split_secret(secret, 3, 5)
+print("Shares:", shares)
+
+# Rekonstruksi rahasia dari 3 shares
+recovered = SecretSharer.recover_secret(shares[:3])
+print("Recovered secret:", recovered)
 
 ---
 
 ## 6. Hasil dan Pembahasan
-(- Lampirkan screenshot hasil eksekusi program (taruh di folder `screenshots/`).  
-- Berikan tabel atau ringkasan hasil uji jika diperlukan.  
-- Jelaskan apakah hasil sesuai ekspektasi.  
-- Bahas error (jika ada) dan solusinya. 
+1. Hasil Program (Output)
+    Saat program dijalankan, output yang muncul kurang lebih seperti berikut:
 
-Hasil eksekusi program Caesar Cipher:
+    Shares: [
+    '1-7c1e9f8a2d...',
+    '2-a93b4c7e51...',
+    '3-4f92d8ab61...',
+    '4-9c3e1a5f2d...',
+    '5-e8b7c4d91a...'
+    ]
 
-![Hasil Eksekusi](screenshots/output.png)
-![Hasil Input](screenshots/input.png)
-![Hasil Output](screenshots/output.png)
-)
+    Recovered secret: KriptografiUPB2025
+
+    Catatan penting:
+    - Nilai shares akan selalu berbeda setiap kali program dijalankan
+    - Hal ini karena proses pembagian rahasia melibatkan bilangan acak
+    - Namun, hasil rekonstruksi rahasia tetap sama
+
+2. Pembahasan Program
+    Program ini mengimplementasikan Shamir’s Secret Sharing (SSS) menggunakan library secretsharing untuk membagi dan merekonstruksi sebuah rahasia secara aman.
+    a. Pendefinisian Rahasia
+        secret = "KriptografiUPB2025"
+        
+        - Rahasia berupa string
+        - Nilai ini yang ingin diamankan agar:
+            - Tidak diketahui oleh satu pihak saja
+            - Hanya dapat dibuka melalui kerja sama beberapa pihak
+
+    b. Proses Pembagian Rahasia (Split Secret)
+        shares = SecretSharer.split_secret(secret, 3, 5)
+
+        - Skema yang digunakan adalah (k, n) = (3, 5)
+            - Rahasia dibagi menjadi 5 share
+            - Minimal 3 share dibutuhkan untuk rekonstruksi
+        Setiap share berbentuk:
+            x-y
+        di mana:
+        x = indeks share
+        y = nilai hasil evaluasi polinomial
+        Setiap share tidak mengandung informasi rahasia secara langsung.
+3. Hasil Shares
+    print("Shares:", shares)
+
+    - Lima share dihasilkan dan dapat didistribusikan ke pihak berbeda
+    - Jika hanya 1 atau 2 share yang bocor:
+        - Rahasia tetap aman
+        - Tidak dapat direkonstruksi
+4. Rekonstruksi Rahasia
+    recovered = SecretSharer.recover_secret(shares[:3])
+    print("Recovered secret:", recovered)
+
+    - Menggunakan tiga share pertama untuk merekonstruksi rahasia
+    - Fungsi recover_secret melakukan interpolasi Lagrange di balik layar
+    - Hasil rekonstruksi adalah rahasia asli "KriptografiUPB2025"
+5. Hasil Rekonstruksi
+    Recovered secret: KriptografiUPB2025
+
+    - Rahasia berhasil direkonstruksi 100% identik
+    - Membuktikan bahwa:
+        - Skema threshold bekerja dengan benar
+        - Share kurang dari threshold tidak cukup
+6. Analisis Keamanan
+    a. Keamanan Skema (k, n)
+        - Dengan skema (3, 5):
+            - Minimal 3 share diperlukan untuk membuka rahasia
+            - Jika hanya 1 atau 2 share bocor:
+                - Tidak ada informasi yang dapat diperoleh tentang rahasia
+                - Keamanan terjamin secara information-theoretic
+    b. Risiko Threshold
+        - Jika threshold k terlalu kecil (misal k=2):
+            - Rahasia lebih rentan terhadap kolusi
+        - Jika threshold k terlalu besar (misal k=5):
+            - Risiko kehilangan rahasia meningkat jika satu share hilang
+    c. Penerapan Dunia Nyata
+        - Manajemen kunci cryptocurrency:
+            - Private key dibagi ke beberapa pihak
+            - Transaksi hanya bisa dilakukan jika threshold terpenuhi
+        - Recovery password:
+            - Password master dibagi ke beberapa admin
+            - Sistem dapat dipulihkan jika sebagian admin tersedia
+        - Keamanan cloud:
+            - Kunci enkripsi dibagi ke beberapa server
+            - Meningkatkan keamanan terhadap kompromi internal
+        - Sistem voting elektronik:
+            - Kunci dekripsi suara dibagi ke beberapa otoritas
+            - Hasil hanya dapat dibuka jika otoritas bekerja sama
+    d. Kesimpulan Analisis
+        - Shamir’s Secret Sharing adalah metode efektif untuk membagi rahasia
+        - Menyediakan keamanan yang kuat dengan jaminan matematis
+        - Penting untuk memilih threshold k yang tepat sesuai kebutuhan keamanan dan ketersediaan
 
 ---
 
 ## 7. Jawaban Pertanyaan
 (Jawab pertanyaan diskusi yang diberikan pada modul.  
-- Pertanyaan 1: …  
-- Pertanyaan 2: …  
+- Pertanyaan 1:  Apa keuntungan utama Shamir Secret Sharing dibanding membagikan salinan kunci secara langsung?
+    Jawaban:
+    Keuntungan utama Shamir Secret Sharing dibandingkan dengan membagikan salinan kunci secara langsung adalah:
+    1. Keamanan Threshold: Dengan SSS, rahasia hanya dapat direkonstruksi jika sejumlah minimum share (threshold) digabungkan. Ini mencegah pihak yang tidak berwenang dari mengakses rahasia hanya dengan memiliki satu atau dua salinan kunci.
+    2. Tahan terhadap Kehilangan: Jika beberapa share hilang atau rusak, rahasia masih dapat direkonstruksi selama threshold terpenuhi. Ini meningkatkan keandalan sistem.
+    3. Perlindungan terhadap Kolusi: SSS melindungi rahasia dari kolusi antara beberapa pihak yang memiliki share, selama jumlah mereka kurang dari threshold.
+    4. Fleksibilitas: SSS memungkinkan penyesuaian jumlah share dan threshold sesuai kebutuhan keamanan dan ketersediaan.
+- Pertanyaan 2: Apa peran threshold (k) dalam keamanan secret sharing?
+    Jawaban:
+    Threshold (k) dalam secret sharing menentukan jumlah minimum share yang diperlukan untuk merekonstruksi rahasia asli. Peran threshold dalam keamanan secret sharing meliputi:
+    1. Menentukan Tingkat Keamanan: Semakin tinggi nilai k, semakin sulit bagi pihak yang tidak berwenang untuk mengakses rahasia, karena mereka memerlukan lebih banyak share untuk rekonstruksi.
+    2. Mencegah Akses Tidak Sah: Dengan menetapkan threshold, secret sharing memastikan bahwa rahasia tidak dapat diakses oleh individu atau kelompok yang memiliki kurang dari k share, sehingga meningkatkan
+    3. Menyeimbangkan Keamanan dan Ketersediaan: Pemilihan nilai k harus mempertimbangkan kebutuhan keamanan dan ketersediaan. Nilai k yang terlalu rendah dapat mengurangi keamanan, sementara nilai k yang terlalu tinggi dapat mengurangi ketersediaan rahasia.
+- Pertanyaan 3: Berikan satu contoh skenario nyata di mana SSS sangat bermanfaat.
+    Jawaban:
+    Satu contoh skenario nyata di mana Shamir Secret Sharing (SSS) sangat bermanfaat adalah dalam manajemen kunci cryptocurrency untuk dompet multi-signature. Dalam skenario ini, private key yang digunakan untuk mengakses dana dalam dompet cryptocurrency dibagi menjadi beberapa share yang didistribusikan kepada beberapa pihak, seperti anggota tim atau administrator. Dengan menggunakan skema (k, n), di mana k adalah jumlah minimum share yang diperlukan untuk melakukan transaksi dan n adalah total share yang dibagikan, SSS memastikan bahwa tidak ada satu pihak pun yang dapat mengakses dana secara sepihak. Hanya ketika sejumlah minimum pihak bekerja sama dan menggabungkan share mereka, transaksi dapat dilakukan. Ini meningkatkan keamanan dana dengan mencegah pencurian atau penyalahgunaan oleh satu individu, sekaligus memastikan bahwa dana tetap dapat diakses jika beberapa pihak tidak tersedia.
+
 )
 ---
 
 ## 8. Kesimpulan
-(Tuliskan kesimpulan singkat (2–3 kalimat) berdasarkan percobaan.  )
+(Berdasarkan percobaan yang dilakukan, Shamir’s Secret Sharing berhasil membagi sebuah rahasia menjadi beberapa bagian dengan skema threshold (3,5). Rahasia hanya dapat direkonstruksi jika jumlah share yang digunakan memenuhi ambang batas yang ditentukan. Percobaan ini membuktikan bahwa metode Secret Sharing efektif dalam menjaga keamanan rahasia meskipun sebagian share bocor.  )
 
 ---
 
 ## 9. Daftar Pustaka
 (Cantumkan referensi yang digunakan.  
-Contoh:  
-- Katz, J., & Lindell, Y. *Introduction to Modern Cryptography*.  
-- Stallings, W. *Cryptography and Network Security*.  )
+1. Shamir, A. (1979). How to Share a Secret. Communications of the ACM, 22(11), 612–613.
+2. Menezes, A. J., van Oorschot, P. C., & Vanstone, S. A. (1996). Handbook of Applied Cryptography. CRC Press.
+3. Katz, J., & Lindell, Y. (2014). Introduction to Modern Cryptography (2nd ed.). CRC Press.
+4. Boneh, D., & Shoup, V. (2020). A Graduate Course in Applied Cryptography. Draft book.
+5. SecretSharing Python Library Documentation. (n.d.). Shamir’s Secret Sharing Implementation.  )
 
 ---
 
 ## 10. Commit Log
 (Tuliskan bukti commit Git yang relevan.  
-Contoh:
 ```
-commit abc12345
-Author: Nama Mahasiswa <email>
-Date:   2025-09-20
+commit week11-secret-sharing
+Author: Fiqri Nur Hidayanto <fiqrinur0801@gmail.com>
+Date:   2025-12-29
 
-    week2-cryptosystem: implementasi Caesar Cipher dan laporan )
+    week11-secret-sharing )
 ```

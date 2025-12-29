@@ -130,8 +130,51 @@ Langkah 2 — Memverifikasi Sertifikat
 Langkah 3 — Analisis PKI
 Diskusikan kasus nyata:
 - Bagaimana browser memverifikasi sertifikat HTTPS?
+    Saat pengguna mengakses situs HTTPS, browser melakukan beberapa langkah verifikasi berikut:
+    1. Menerima sertifikat dari server
+        - Sertifikat berisi domain, public key, masa berlaku, dan tanda tangan CA.
+    2. Memeriksa rantai kepercayaan (Chain of Trust)
+        - Browser memverifikasi sertifikat server → Intermediate CA → Root CA.
+        - Root CA harus ada dalam trust store browser/OS.
+    3. Memverifikasi tanda tangan digital
+        - Browser memverifikasi tanda tangan sertifikat menggunakan public key CA.
+        - Jika valid, berarti sertifikat benar diterbitkan CA tepercaya.
+    4. Memeriksa kecocokan domain
+        - Domain pada sertifikat harus cocok dengan URL yang diakses.
+    5. Memeriksa masa berlaku & status pencabutan
+        - Dicek melalui tanggal validitas serta CRL atau OCSP.
+    Jika semua tahap lolos, koneksi HTTPS dinyatakan aman dan ikon gembok ditampilkan.
 - Apa yang terjadi jika CA palsu menerbitkan sertifikat?
+    Jika CA palsu atau CA yang diretas berhasil menerbitkan sertifikat:
+    1. Dampak Keamanan
+        - Penyerang dapat melakukan Man-in-the-Middle (MITM)
+        - Pengguna tidak menyadari bahwa koneksi mereka disadap
+        - Data sensitif seperti password dan nomor kartu kredit dapat dicuri
+    2. Respons Sistem Modern
+        - Browser akan memblokir atau menandai sertifikat
+        - Root CA palsu akan:
+            - Dihapus dari trust store
+            - Dicabut kepercayaannya (distrusted)
+    Contoh nyata:
+    Kasus DigiNotar (2011) → CA diretas, sertifikat palsu diterbitkan, akhirnya bangkrut dan dihapus dari browser
 - Mengapa PKI penting dalam komunikasi aman (misalnya transaksi online)?
+    PKI sangat penting karena menyediakan fondasi kepercayaan dalam komunikasi digital.
+    Alasan Utama:
+    1. Otentikasi
+        - Memastikan pengguna terhubung ke server yang benar (bukan palsu)
+    2. Kerahasiaan
+        - Data dienkripsi selama transmisi (HTTPS / TLS)
+    3. Integritas
+        - Data tidak diubah selama pengiriman
+    4. Non-repudiation
+        - Pihak tidak bisa menyangkal transaksi yang dilakukan
+    Contoh Transaksi Online:
+    - Login internet banking
+    - Pembayaran e-commerce
+    - Pengiriman data pribadi
+    Tanpa PKI:
+    - HTTPS tidak bisa dipercaya
+    - Transaksi online sangat rentan terhadap penyadapan dan pemalsuan
 ---
 
 ## 6. Hasil dan Pembahasan
