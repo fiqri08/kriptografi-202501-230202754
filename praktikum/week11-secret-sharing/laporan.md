@@ -67,7 +67,7 @@ Kelas: [5IKKA]
 (- Python 3.13  
 - Visual Studio Code / editor lain  
 - Git dan akun GitHub  
-- Library tambahan (misalnya pycryptodome, jika diperlukan)  )
+- Library tambahan (shamir_mnemonic) )
 
 ---
 
@@ -145,18 +145,25 @@ Diskusikan:
 ---
 
 ## 5. Source Code
-from secretsharing import SecretSharer
+from shamir_mnemonic import generate_mnemonics, combine_mnemonics
 
 # Rahasia yang ingin dibagi
-secret = "KriptografiUPB2025"
+secret = b"KriptografiUPB2025"
 
 # Bagi menjadi 5 shares, ambang batas 3 (minimal 3 shares untuk rekonstruksi)
-shares = SecretSharer.split_secret(secret, 3, 5)
-print("Shares:", shares)
+shares = generate_mnemonics(
+    group_threshold=1,
+    groups=[(3, 5)],
+    master_secret=secret
+)
+
+print("Shares:")
+for s in shares[0]:
+    print(s)
 
 # Rekonstruksi rahasia dari 3 shares
-recovered = SecretSharer.recover_secret(shares[:3])
-print("Recovered secret:", recovered)
+recovered = combine_mnemonics(shares[0][:3])
+print("Recovered secret:", recovered.decode())
 
 ---
 
