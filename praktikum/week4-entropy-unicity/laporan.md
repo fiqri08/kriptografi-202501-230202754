@@ -1,5 +1,5 @@
 # Laporan Praktikum Kriptografi
-Minggu ke-: X  
+Minggu ke-: 4  
 Topik: Entropy & Unicity Distance (Evaluasi Kekuatan Kunci dan Brute Force) 
 Nama: Fiqri Nur Hidayanto  
 NIM: 230202754

@@ -86,7 +86,7 @@ Kelas: [5IKKA]
 (- Python 3.13  
 - Visual Studio Code / editor lain  
 - Git dan akun GitHub  
-- Library tambahan (misalnya pycryptodome, jika diperlukan)  )
+- Library tambahan (hashlib, time)  )
 
 ---
 
