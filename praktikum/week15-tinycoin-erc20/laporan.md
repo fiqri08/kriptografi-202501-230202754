@@ -62,7 +62,7 @@ Kelas: [5IKKA]
 ---
 
 ## 3. Alat dan Bahan
-(- Python 3.x  
+(- Python 3.6  
 - Visual Studio Code / editor lain  
 - Git dan akun GitHub  
 - Library tambahan (misalnya pycryptodome, jika diperlukan)  )
@@ -116,17 +116,7 @@ def encrypt(text, key):
 ---
 
 ## 6. Hasil dan Pembahasan
-(- Lampirkan screenshot hasil eksekusi program (taruh di folder `screenshots/`).  
-- Berikan tabel atau ringkasan hasil uji jika diperlukan.  
-- Jelaskan apakah hasil sesuai ekspektasi.  
-- Bahas error (jika ada) dan solusinya. 
-
-Hasil eksekusi program Caesar Cipher:
-
-![Hasil Eksekusi](screenshots/output.png)
-![Hasil Input](screenshots/input.png)
-![Hasil Output](screenshots/output.png)
-)
+Hasil pengujian menunjukkan bahwa perubahan data pada salah satu block menyebabkan ketidaksesuaian nilai hash dan merusak keterkaitan antar block, sehingga sistem blockchain secara otomatis mendeteksi manipulasi data dan menyatakan blockchain tidak valid.
 
 ---
 
@@ -146,25 +136,30 @@ Hasil eksekusi program Caesar Cipher:
 ---
 
 ## 8. Kesimpulan
-(Tuliskan kesimpulan singkat (2–3 kalimat) berdasarkan percobaan.  )
+(Blockchain memiliki tingkat keamanan yang tinggi karena setiap perubahan data akan memengaruhi nilai hash dan keterkaitan antar block, sehingga manipulasi data dapat terdeteksi secara otomatis.)
 
 ---
 
 ## 9. Daftar Pustaka
-(Cantumkan referensi yang digunakan.  
-Contoh:  
-- Katz, J., & Lindell, Y. *Introduction to Modern Cryptography*.  
-- Stallings, W. *Cryptography and Network Security*.  )
+1. Nakamoto, S. (2008). Bitcoin: A Peer-to-Peer Electronic Cash System.
+    https://bitcoin.org/bitcoin.pdf
+2. Antonopoulos, A. M. (2017). Mastering Bitcoin: Programming the Open Blockchain (2nd ed.). O’Reilly Media.
+3. Antonopoulos, A. M., & Wood, G. (2018). Mastering Ethereum: Building Smart Contracts and DApps. O’Reilly Media.
+4. Drescher, D. (2017). Blockchain Basics: A Non-Technical Introduction in 25 Steps. Apress.
+5. Tapscott, D., & Tapscott, A. (2016). Blockchain Revolution: How the Technology Behind Bitcoin Is Changing Money, Business, and the World. Penguin Random House.
+6. Narayanan, A., Bonneau, J., Felten, E., Miller, A., & Goldfeder, S. (2016). Bitcoin and Cryptocurrency Technologies. Princeton University Press.
+7. Crosby, M., Pattanayak, P., Verma, S., & Kalyanaraman, V. (2016). Blockchain technology: Beyond bitcoin. Applied Innovation Review, 2, 6–19.
+8. Yaga, D., Mell, P., Roby, N., & Scarfone, K. (2019). Blockchain Technology Overview. National Institute of Standards and Technology (NIST).
+9. Stallings, W. (2017). Cryptography and Network Security: Principles and Practice (7th ed.). Pearson Education.
+10. Zheng, Z., Xie, S., Dai, H., Chen, X., & Wang, H. (2017). An overview of blockchain technology: Architecture, consensus, and future trends. IEEE International Congress on Big Data.
 
 ---
 
 ## 10. Commit Log
-(Tuliskan bukti commit Git yang relevan.  
-Contoh:
 ```
-commit abc12345
-Author: Nama Mahasiswa <email>
-Date:   2025-09-20
+commit week15-tinycoin-erc20
+Author: Nama Mahasiswa <fiqrinur0801@gmail.com>
+Date:   2026-01-13
 
-    week2-cryptosystem: implementasi Caesar Cipher dan laporan )
+    week15-tinycoin-erc20 
 ```
